@@ -174,7 +174,7 @@ define([
         // If the editor is already created
         if(editor !== undefined) {
             aceEditor && fileDesc.editorSelectRange && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
+            // aceEditor ? aceEditor.focus() : $editorElt.focus();
             editor.refreshPreview();
 
             MD.$editorElt = $editorElt;
@@ -274,6 +274,9 @@ define([
         // MD API start
 
         MD = editor;
+        MD.focus = function () {
+            aceEditor ? aceEditor.focus() : $editorElt.focus();
+        };
         MD.setContent = function (content) {
             var desc = {
                 content: content
@@ -387,12 +390,12 @@ define([
         if(window.lightMode) {
             editor.run(previewWrapper);
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            $editorElt.focus();
+            // $editorElt.focus();
         }
         else {
             editor.run(aceEditor, previewWrapper);
             fileDesc.editorSelectRange && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor.focus();
+            // aceEditor.focus();
         }
 
         // Hide default buttons
@@ -450,10 +453,13 @@ define([
                 var mode = $(this).data('mode');
                 MD.changeAceKeyboardMode(mode.toLowerCase(), mode);
             });
-            var userMode = localS.get(localSKey);
-            if (userMode) {
-                var userModeUpper = userMode[0].toUpperCase() + userMode.substr(1);
-                MD.changeAceKeyboardMode(userMode, userModeUpper);
+            // 是否可以从storage中设置md mode
+            if (!window.LEA || (window.LEA && window.LEA.canSetMDModeFromStorage && window.LEA.canSetMDModeFromStorage())) {
+                var userMode = localS.get(localSKey);
+                if (userMode) {
+                    var userModeUpper = userMode[0].toUpperCase() + userMode.substr(1);
+                    MD.changeAceKeyboardMode(userMode, userModeUpper);
+                }
             }
         }
     };
@@ -479,7 +485,7 @@ define([
 
         $editorElt = $("#wmd-input, .textarea-helper").css({
             // Apply editor font
-            "font-family": 'Menlo, Consolas, "Courier New", Courier, monospace',
+            "font-family": constants.fontFamily,
             "font-size": constants.fontSize + "px",
             "line-height": Math.round(constants.fontSize * (20 / 12)) + "px"
         });

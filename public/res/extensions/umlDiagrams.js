@@ -30,7 +30,7 @@ define([
 		if (!flows || flows.length == 0) {
 			return;
 		}
-		console.log('flows')
+		// console.log('flows')
 		require(['flow-chart'], function (flowChart) {
 			_.each(flows, function(elt) {
 				try {
@@ -79,7 +79,7 @@ define([
 		if (!flows || flows.length == 0) {
 			return;
 		}
-		console.log('flows')
+		// console.log('flows')
 		require(['flow-chart'], function (flowChart) {
 			_.each(flows, function(elt) {
 				try {

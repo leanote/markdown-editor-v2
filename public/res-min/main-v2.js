@@ -1377,6 +1377,7 @@ define('constants',[], function() {
     var constants = {};
     constants.EDITOR_DEFAULT_PADDING = 5;
     constants.fontSize = 14;
+    constants.fontFamily = 'Menlo, Consolas, "Courier New", Courier, monospace, "Microsoft YaHei", "微软雅黑"';
     return constants;
 });
 
@@ -12568,7 +12569,7 @@ define('extensions/umlDiagrams',[
 		if (!flows || flows.length == 0) {
 			return;
 		}
-		console.log('flows')
+		// console.log('flows')
 		require(['flow-chart'], function (flowChart) {
 			_.each(flows, function(elt) {
 				try {
@@ -12617,7 +12618,7 @@ define('extensions/umlDiagrams',[
 		if (!flows || flows.length == 0) {
 			return;
 		}
-		console.log('flows')
+		// console.log('flows')
 		require(['flow-chart'], function (flowChart) {
 			_.each(flows, function(elt) {
 				try {
@@ -16499,7 +16500,7 @@ define('core',[
         // If the editor is already created
         if(editor !== undefined) {
             aceEditor && fileDesc.editorSelectRange && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor ? aceEditor.focus() : $editorElt.focus();
+            // aceEditor ? aceEditor.focus() : $editorElt.focus();
             editor.refreshPreview();
 
             MD.$editorElt = $editorElt;
@@ -16599,6 +16600,9 @@ define('core',[
         // MD API start
 
         MD = editor;
+        MD.focus = function () {
+            aceEditor ? aceEditor.focus() : $editorElt.focus();
+        };
         MD.setContent = function (content) {
             var desc = {
                 content: content
@@ -16712,12 +16716,12 @@ define('core',[
         if(window.lightMode) {
             editor.run(previewWrapper);
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
-            $editorElt.focus();
+            // $editorElt.focus();
         }
         else {
             editor.run(aceEditor, previewWrapper);
             fileDesc.editorSelectRange && aceEditor.selection.setSelectionRange(fileDesc.editorSelectRange);
-            aceEditor.focus();
+            // aceEditor.focus();
         }
 
         // Hide default buttons
@@ -16775,10 +16779,13 @@ define('core',[
                 var mode = $(this).data('mode');
                 MD.changeAceKeyboardMode(mode.toLowerCase(), mode);
             });
-            var userMode = localS.get(localSKey);
-            if (userMode) {
-                var userModeUpper = userMode[0].toUpperCase() + userMode.substr(1);
-                MD.changeAceKeyboardMode(userMode, userModeUpper);
+            // 是否可以从storage中设置md mode
+            if (!window.LEA || (window.LEA && window.LEA.canSetMDModeFromStorage && window.LEA.canSetMDModeFromStorage())) {
+                var userMode = localS.get(localSKey);
+                if (userMode) {
+                    var userModeUpper = userMode[0].toUpperCase() + userMode.substr(1);
+                    MD.changeAceKeyboardMode(userMode, userModeUpper);
+                }
             }
         }
     };
@@ -16804,7 +16811,7 @@ define('core',[
 
         $editorElt = $("#wmd-input, .textarea-helper").css({
             // Apply editor font
-            "font-family": 'Menlo, Consolas, "Courier New", Courier, monospace',
+            "font-family": constants.fontFamily,
             "font-size": constants.fontSize + "px",
             "line-height": Math.round(constants.fontSize * (20 / 12)) + "px"
         });
