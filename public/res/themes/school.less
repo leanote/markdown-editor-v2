@@ -1,0 +1,94 @@
+@import "../styles/main.less";
+
+@board-color: #385E50;
+@board-border-color: #B9B39F;
+@blue-ink: #284F72;
+@black-ink: #444;
+@red-ink: #B56E85;
+@green-ink: #6c9c7f;
+@navbar-default-bg: darken(@board-color, 4%);
+@primary: desaturate(darken(@board-border-color, 20%), 20%);
+@primary-color: lighten(@blue-ink, 30%);
+@secondary-color: lighten(@blue-ink, 20%);
+@tertiary-color: desaturate(lighten(@blue-ink, 20%), 20%);
+@secondary: @primary;
+@tertiary: @primary;
+@primary-desaturated: @primary;
+@secondary-desaturated: darken(@board-border-color, 19%);
+@primary-border-color: @navbar-default-bg;
+@modal-backdrop-bg: @primary;
+@btn-success-color: #eee;
+@btn-success-bg: @transparent;
+@btn-success-border: @transparent;
+@btn-success-hover-bg: lighten(@navbar-default-bg, 10%);
+@panel-button-bg-color: #ddd;
+
+
+// Navbar buttons
+.btn-success {
+    &:hover,
+    &:focus,
+    &:active,
+    .open &.dropdown-toggle {
+    	color: @btn-success-color;
+    	border-color: lighten(@navbar-default-bg, 10%);
+    }
+}
+
+.navbar .dropdown-menu {
+    background-color: lighten(@navbar-default-bg, 5%);
+    border-color: @primary-border-color;
+}
+
+@font-face {
+    font-family: 'cursive_standardregular';
+    src: url('../font/cursive_standard-webfont.eot');
+    src: url('../font/cursive_standard-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/cursive_standard-webfont.woff') format('woff'),
+         url('../font/cursive_standard-webfont.ttf') format('truetype'),
+         url('../font/cursive_standard-webfont.svg#cursive_standardregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ace-tm {
+	.ace_content {
+	    background-image: url("../img/school-line.png");
+		background-repeat: repeat;
+	}
+	.ace_marker-layer .ace_active-line {
+		background-color: fade(@blue-ink, 5%);
+	}
+	.ace_print-margin {
+		background-color: fade(@red-ink, 50%);
+	}
+	
+	.ace_markup.ace_heading {
+		color: @black-ink;
+	}
+	
+	.ace_blockquote {
+		color: @red-ink;
+	}
+	
+	.ace_code {
+		color: @green-ink;
+	}
+	
+	.ace_code_block {
+		color: @green-ink;
+	}
+	
+	.ace_comment {
+		color: @green-ink;
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'cursive_standardregular';
+}
+
+.navbar .file-title-navbar {
+	font-family: 'cursive_standardregular';
+	line-height: 34px;
+}

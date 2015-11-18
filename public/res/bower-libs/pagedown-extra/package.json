@@ -1,0 +1,12 @@
+{
+  "name": "pagedown-extra",
+  "version": "0.1.0",
+  
+  "main": "node-pagedown-extra.js",
+  "devDependencies": {
+    "karma": "~0.10.8"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/karma start karma.conf.js --single-run"
+  }
+}

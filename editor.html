@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="/external/bootstrap.css" rel="stylesheet" />
+<!-- <link href="/res/bower-libs/ace/lib/ace/css/editor.css" rel="stylesheet" /> -->
+<link rel="stylesheet" href="/external/font-awesome-4.2.0/css/font-awesome.css" type="text/css"/>
+<link rel="stylesheet" href="/external/default.css" type="text/css"/>
+<link rel="stylesheet" href="/external/writting.css" type="text/css"/>
+<link rel="stylesheet" href="/external/md.css" type="text/css"/>
+<style>
+.leanoteNav, .layout-toggler {
+  display: none;
+}
+</style>
+<title>Leanote Markdown Editor</title>
+<script>
+function log(o) {
+  console.log(o);
+}
+</script>
+</head>
+<body class="clearfix writting">
+  
+  <div id="page" class="clearfix">
+    <div id="pageInner">
+      <div id="mainContainer" class="clearfix">
+        <div id="noteAndEditor">
+          <div id="note">
+          <!-- 只读模式 -->
+          
+          <div id="mdEditor">
+            <div class="layout-wrapper-l1">
+                <div class="layout-wrapper-l2">
+                    <div class="navbar navbar-default">
+                        <div class="navbar-inner" id="wmd-button-bar">
+                            <ul class="nav left-buttons">
+                                <li class="wmd-button-group1 btn-group"></li>
+                            </ul>
+                            <ul class="nav left-buttons">
+                                <li class="wmd-button-group2 btn-group"></li>
+                            </ul>
+                            <ul class="nav left-buttons">
+                                <li class="wmd-button-group3 btn-group"></li>
+                            </ul>
+                            <ul class="nav left-buttons">
+                                <li class="wmd-button-group4 btn-group"></li>
+                            </ul>
+                            <!-- 帮助 -->
+                             <ul class="nav left-buttons">
+                                <li class="wmd-button-group6 btn-group">
+                                  <li class="wmd-button btn btn-success" id="wmd-help-button" title="Markdown syntax" style="left: 0px; display: none;"><span style="display: none; background-position: 0px 0px;"></span><i class="fa fa-question-circle"></i></li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-wrapper-l3">
+                      <div id="left-column">
+                          <pre id="wmd-input" class="form-control"><div id="wmd-input-sub" class="editor-content mousetrap" contenteditable=true></div><div class="editor-margin"></div></pre>
+                          <div class="textarea-helper"></div>
+                          <!-- <textarea id="wmd-input"></textarea> -->
+                        </div>
+                        <div id="right-column">
+                        <div class="preview-panel panel-open" id="preview-panel">
+                          <div id="mdSplitter2" class="layout-resizer layout-resizer-preview open" style="-webkit-user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); touch-action: none;"></div>
+                            <div class="layout-toggler layout-toggler-preview btn btn-info open" title="Toggle preview" data-open="1"><i class="fa fa-angle-right"></i></div>
+                            <div class="preview-container">
+                                <div id="preview-contents">
+                                    <div id="wmd-preview" class="preview-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="extension-preview-buttons">
+                  <div id="leanoteNavMd" class="leanoteNav">
+                    <h1>
+                      <i class="fa fa-align-justify" title="Note nav"></i>
+                      <span>Note nav</span>
+                    </h1>
+                    <div id="leanoteNavContentMd" class="leanoteNavContent table-of-contents">
+                    </div>
+                  </div>
+                    </div>
+                </div>
+                <!-- <div id="wmd-button-bar" class="hide"></div> -->
+            </div>  
+          
+          </div>
+
+        </div>  
+      </div>
+    </div>
+</div>
+
+
+<textarea id="life">leanote Markdown 语法手册
+
+
+```sequence
+Alice->Bob: Hello Bob, how are you?
+Note right of Bob: Bob thinks
+Bob-->Alice: I am good thanks!
+```
+ 
+And flow charts like this:
+ 
+```flow
+st=>start: Start
+e=>end
+op=>operation: My Operation
+cond=>condition: Yes or No?
+ 
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+
+```
+function a() {
+}
+```
+    life
+    function a() {
+    }
+    
+    enter code here
+
+ 
+You can also render sequence diagrams like this:
+ 
+> **Note:** You can find more information:
+ 
+> - about **Sequence diagrams** syntax [here][7],
+> - about **Flow charts** syntax [here][8].
+ 
+### Support Leanote
+
+大家可复制以下的文字, 粘贴到新建的Markdown笔记中看看效果.
+
+[toc]
+
+# leanote Markdown 语法手册
+
+## 1. 斜体和粗体
+
+使用 * 和 ** 表示斜体和粗体。
+
+----------
+
+示例：
+
+这是 *斜体*，这是 **粗体**。
+
+## 2. 分级标题
+
+使用 === 表示一级标题，使用 --- 表示二级标题。
+
+示例：
+
+```
+这是一个一级标题
+============================
+
+这是一个二级标题
+--------------------------------------------------
+
+### 这是一个三级标题
+```
+
+你也可以选择在行首加井号表示不同级别的标题 (H1-H6)，例如：# H1, ## H2, ### H3，#### H4。
+
+## 3. 外链接
+
+使用 \[描述](链接地址) 为文字增加外链接。
+
+示例：
+
+这是去往 [Leanote官方博客](http://leanote.leanote.com) 的链接。
+
+## 4. 无序列表
+
+使用 *，+，- 表示无序列表。
+
+示例：
+
+- 无序列表项 一
+- 无序列表项 二
+- 无序列表项 三
+
+## 5. 有序列表
+
+使用数字和点表示有序列表。
+
+示例：
+
+1. 有序列表项 一
+2. 有序列表项 二
+3. 有序列表项 三
+
+## 6. 文字引用
+
+使用 > 表示文字引用。
+
+示例：
+
+> 野火烧不尽，春风吹又生。
+
+## 7. 行内代码块
+
+使用 \`代码` 表示行内代码块。
+
+示例：
+
+让我们聊聊 `html`。
+
+## 8. 代码块
+
+使用 四个缩进空格 表示代码块。
+
+示例：
+
+这是一个代码块，此行左侧有四个不可见的空格。
+
+## 9. 插入图像
+
+使用 \!\[描述](图片链接地址) 插入图像。
+
+示例：
+
+![leanote](http://leanote.com/images/logo.png)
+
+# Markdown 高阶语法手册
+
+## 1. LaTeX 公式
+
+$ 表示行内公式：
+
+质能守恒方程可以用一个很简洁的方程式 $E=mc^2$ 来表达。
+
+$$ 表示整行公式：
+
+$$\sum_{i=1}^n a_i=0$$
+
+$$f(x_1,x_x,\ldots,x_n) = x_1^2 + x_2^2 + \cdots + x_n^2 $$
+
+$$\sum^{j-1}_{k=0}{\widehat{\gamma}_{kj} z_k}$$
+
+访问 [MathJax](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference) 参考更多使用方法。
+
+# 2. 加强的代码块
+
+支持四十一种编程语言的语法高亮的显示，行号显示。
+
+非代码示例：
+
+```
+$ sudo apt-get install vim-gnome
+```
+
+Python 示例：
+
+```python
+@requires_authorization
+def somefunc(param1='', param2=0):
+'''A docstring'''
+if param1 > param2: # interesting
+print 'Greater'
+return (param2 - param1 + 1) or None
+
+class SomeClass:
+pass
+
+>>> message = '''interpreter
+... prompt'''
+```
+
+JavaScript 示例：
+
+``` javascript
+/**
+* nth element in the fibonacci series.
+* @param n >= 0
+* @return the nth element, >= 0.
+*/
+function fib(n) {
+var a = 1, b = 1;
+var tmp;
+while (--n >= 0) {
+tmp = a;
+a += b;
+b = tmp;
+}
+return a;
+}
+
+document.write(fib(10));
+```
+
+## 3. 表格支持
+
+示例：
+
+| 项目     | 价格 | 数量  |
+| --------  | -----: | :----:  |
+| 计算机 | $1600 | 5    |
+| 手机    | $12     | 12   |
+| 管线    | $1       | 234 |
+Welcome to Leanote!
+===================
+ 
+![leanote](http://leanote.com/public/images/logo/leanote_icon_blue.png)
+ 
+# h1
+## h2
+### h3
+#### h4
+##### h4
+###### h5
+ 
+## MathJax 公式
+$$
+\begin{eqnarray}
+\vec\nabla \times (\vec\nabla f) & = & 0  \cdots\cdots梯度场必是无旋场\\
+\vec\nabla \cdot(\vec\nabla \times \vec F) & = & 0\cdots\cdots旋度场必是无散场\\
+\vec\nabla \cdot (\vec\nabla f) & = & {\vec\nabla}^2f\\
+\vec\nabla \times(\vec\nabla \times \vec F) & = & \vec\nabla(\vec\nabla \cdot \vec F) - {\vec\nabla}^2 \vec F\\
+\end{eqnarray}
+$$
+ 
+--------------------------------
+ 
+$$
+\begin{array}{lll}
+    %最上面的一小行
+    \,\,\,微分形式 & &\,\,\,积分形式\\
+    %微分形式
+    \begin{cases}
+        \vec\nabla \times \vec H = \vec J + {\partial \vec D \over \partial \vec t} & (1)\\
+        \vec\nabla \times \vec E = -{\partial \vec B \over \partial t} & (2)\\
+        \vec\nabla \cdot \vec B = 0 & (3)\\
+        \vec\nabla \cdot \vec D = \rho & (4)
+    \end{cases}
+    &
+    %推导条件
+    \begin{array}[]{}
+        \underleftrightarrow{\iint_\vec S (\vec\nabla \times \vec F)d\vec S = \oint_\vec l \vec F \cdot d \vec l}\\
+        %下面的两行是为了空出来中间的位置
+        \,\\
+        \,\\
+        \underleftrightarrow{\iiint_\vec S \vec\nabla \cdot \vec Fd\vec V = \iint_\vec S \vec F \cdot d \vec S}\\ 
+        %实在是没有办法，不支持\oiint ,只能用\iint代替了，见谅
+    \end{array} 
+    &
+    %积分形式
+    \begin{cases}
+        \oint_\vec l \vec H \cdot d\vec l=-\int_\vec S (\vec J + {\partial \vec D \over \partial t} \cdot d\vec S) & (1)\\
+        \oint_\vec l \vec E \cdot d \vec l = - \int _ \vec S({\partial \vec B \over \partial \vec t})\cdot d \vec S & (2)\\
+        \int_\vec S \vec B\cdot d \vec S = 0& (3)\\
+        \int_\vec S \vec D \cdot d \vec S = Q&(4)
+    \end{cases}
+\end{array}
+$$
+ 
+**strong text**
+Hey! I'm your first Markdown document in **Leanote**[^Leanote]. 
+ 
+ 
+Markdown Extra
+--------------------
+ 
+Leanote supports **Markdown Extra**, which extends **Markdown** syntax with some nice features.
+ 
+> **Tip:** You can disable any **Markdown Extra** feature in the **Extensions** tab of the <i class="icon-cog"></i> **Settings** dialog.
+ 
+> **Note:** You can find more information about **Markdown** syntax [here][2] and **Markdown Extra** extension [here][3].
+ 
+ 
+### Tables
+ 
+**Markdown Extra** has a special syntax for tables:
+ 
+Item     | Value
+-------- | ---
+Computer | $1600
+Phone    | $12
+Pipe     | $1
+ 
+You can specify column alignment with one or two colons:
+ 
+| Item     | Value | Qty   |
+| :------- | ----: | :---: |
+| Computer | $1600 |  5    |
+| Phone    | $12   |  12   |
+| Pipe     | $1    |  234  |
+ 
+ 
+### Definition Lists
+ 
+**Markdown Extra** has a special syntax for definition lists too:
+ 
+Term 1
+Term 2
+:   Definition A
+:   Definition B
+ 
+Term 3
+ 
+:   Definition C
+ 
+:   Definition D
+ 
+  > part of definition D
+ 
+ 
+### Fenced code blocks
+ 
+GitHub's fenced code blocks are also supported with **Highlight.js** syntax highlighting:
+ 
+```
+// Foo
+var bar = 0;
+```
+ 
+> **Tip:** To use **Prettify** instead of **Highlight.js**, just configure the **Markdown Extra** extension in the <i class="icon-cog"></i> **Settings** dialog.
+ 
+> **Note:** You can find more information:
+ 
+> - about **Prettify** syntax highlighting [here][5],
+> - about **Highlight.js** syntax highlighting [here][6].
+ 
+ 
+### Footnotes
+ 
+You can create footnotes like this[^footnote].
+ 
+  [^footnote]: Here is the *text* of the **footnote**.
+ 
+ 
+### SmartyPants
+ 
+SmartyPants converts ASCII punctuation characters into "smart" typographic punctuation HTML entities. For example:
+ 
+|                  | ASCII                        | HTML              |
+ ----------------- | ---------------------------- | ------------------
+| Single backticks | `'Isn't this fun?'`            | 'Isn't this fun?' |
+| Quotes           | `"Isn't this fun?"`            | "Isn't this fun?" |
+| Dashes           | `-- is en-dash, --- is em-dash` | -- is en-dash, --- is em-dash |
+ 
+ 
+### Table of contents
+ 
+You can insert a table of contents using the marker `[TOC]`:
+ 
+[TOC]
+ 
+ 
+### MathJax 科学公式
+ 
+$$E=mc^2$$
+ 
+$$\(\sqrt{3x-1}+(1+x)^2\)$$
+                    
+$$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
+You can render *LaTeX* mathematical expressions using **MathJax**, as on [math.stackexchange.com][1]:
+ 
+The *Gamma function* satisfying $\Gamma(n) = (n-1)!\quad\forall n\in\mathbb N$ is via the Euler integral
+ 
+$$
+\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.
+$$
+ 
+> **Tip:** To make sure mathematical expressions are rendered properly on your website, include **MathJax** into your template:
+ 
+```
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+```
+ 
+> **Note:** You can find more information about **LaTeX** mathematical expressions [here][4].
+ 
+ 
+ 
+> **Note:** You can find more information:
+ 
+> - about **Sequence diagrams** syntax [here][7],
+> - about **Flow charts** syntax [here][8].
+ 
+### Support Leanote
+ 
+Alipay Donation:
+ 
+![leantoe donation](http://leanote.org/images/leanote/leanote_alipay.jpg)
+ 
+ 
+  [^Leanote]: [Leanote](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
+ 
+ 
+  [1]: http://math.stackexchange.com/
+  [2]: http://daringfireball.net/projects/markdown/syntax "Markdown"
+  [3]: https://github.com/jmcmanus/pagedown-extra "Pagedown Extra"
+  [4]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference*emphasized text*
+  [5]: https://code.google.com/p/google-code-prettify/
+  [6]: http://highlightjs.org/
+  [7]: http://bramp.github.io/js-sequence-diagrams/
+  [8]: http://adrai.github.io/flowchart.js/
+</textarea>
+
+<script src="/external/jquery-1.9.0.min.js"></script>
+<script src="/res/libs/ace/ace.js"></script>
+<script src="/external/bootstrap.js"></script>
+<script>
+    var UrlPrefix = "leanote";
+    var MD = null;
+    function log(o) {
+        console.log(o);
+    }
+    var getMsg = function(msg) {
+      return msg;
+    }
+    var baseDir = 'res';
+    console.log(baseDir);
+    window.require = {
+        baseUrl: baseDir,
+        deps: ['main']
+    };
+
+    function setEditorContent(content) {
+      if(MD) {
+        MD.setContent(content);
+      } else {
+        clearIntervalForSetContent = setTimeout(function() {
+          setEditorContent(content, true);
+        }, 100);
+      }
+    }
+
+    var content = $('#life').val();
+    setEditorContent(content);
+</script>
+<script src="/external/require.js"></script>
+</body>
+</html>

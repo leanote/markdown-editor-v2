@@ -1,0 +1,8 @@
+.project
+.settings
+node_modules
+Thumbs.db
+.DS_Store
+public/res-min/themes
+public/res-min/font
+public/res-min/img
