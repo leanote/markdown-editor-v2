@@ -17,7 +17,7 @@ Leanote's Markdown Editor originally forked from [Stackedit](https://github.com/
 Please install `node` and `gulp` firstly.
 
 ```
-> gulp # build & minify res-min/main-v2.js (https://github.com/leanote/leanote/blob/master/public/dist/main-v2.js), res-min/main-v2.min.js (https://github.com/leanote/leanote/blob/master/public/dist/main-v2.min.js)
+> gulp # build & minify res-min/main-v2.js, res-min/main-v2.min.js
 ```
 
 ## Local Debug
@@ -30,55 +30,8 @@ See: http://localhost:3001/editor.html
 
 ![](screenshot.png)
 
-## Integrated With Leanote
-
-Copy `res-min/main-v2.min.js` to leanote's path `/public/dist/`.
-
-Update node-dev.html with:
-
-```html
-<script>
-initPage();
-window.require = {
-    baseUrl: '/public',
-};
-</script>
-
-<!-- pro_markdown_js -->
-
-<!-- dev -->
-<script src="/js/require.js"></script>
-<script src="/public/dist/main-v2.min.js"></script>
-<!-- /dev -->
-
-<script src="/public/js/plugins/main.js"></script>
-</body>
-```
-
-## Source Debug With Leanote 
-
-Replace node-dev.html with:
-
-```html
-<script>
-initPage();
-window.require = {
-    baseUrl: '/public/res', // link to res
-};
-</script>
-
-<!-- pro_markdown_js -->
-
-<!-- dev -->
-<script src="/js/require.js"></script>
-<script src="/public/res/main.js"></script>
-<!-- /dev -->
-
-<!--
-<script src="/public/js/plugins/main.js"></script>
--->
-</body>
-```
+## Integrated With Leanote Desktop App
+copy res-min/main-v2.js & res-min/main-v2.min.js to leanote-dekstop-app's path `/public/md/`
 
 ----------------------------------------
 
@@ -91,7 +44,7 @@ window.require = {
 
 确保在此之前安装了node, gulp
 ```
-> gulp # 生成 res-min/main-v2.js (https://github.com/leanote/leanote/blob/master/public/dist/main-v2.js) 和 res-min/main-v2.min.js (https://github.com/leanote/leanote/blob/master/public/dist/main-v2.min.js)
+> gulp # 生成 res-min/main-v2.js 和 res-min/main-v2.min.js
 ```
 
 ## 本地调试
@@ -104,59 +57,12 @@ window.require = {
 
 ![](screenshot.png)
 
-## Leanote 使用本 Markdown v2 编辑器
+## Leanote 桌面端使用本 Markdown v2 编辑器
 
-将 `res-min/main-v2.min.js` 复制到leanote的 `/public/dist/` 下
+将 `res-min/main-v2.min.js` 复制到desktop-app `/public/md/` 下
 
-node-dev.html:
+## 与Web的不同
 
-```html
-<script>
-initPage();
-// 当tinymce.dev.js时, 请注释require
-window.require = {
-    baseUrl: '/public',
-};
-</script>
-
-<!-- pro_markdown_js -->
-
-<!-- dev -->
-<script src="/js/require.js"></script>
-<script src="/public/dist/main-v2.min.js"></script>
-<!-- /dev -->
-
-<script src="/public/js/plugins/main.js"></script>
-</body>
-```
-
-## Leanote 调试 Markdown 编辑器的源码
-
-替换node-dev.html
-
-```html
-<script>
-initPage();
-window.require = {
-    baseUrl: '/public/res', // res指向源码
-};
-</script>
-
-<!-- pro_markdown_js -->
-
-<!-- dev -->
-<script src="/js/require.js"></script>
-<script src="/public/res/main.js"></script>
-<!-- /dev -->
-
-<!--
-不要
-<script src="/public/js/plugins/main.js"></script>
--->
-</body>
-```
-
-## 与Web上的不同
 * 将res/libs目录移到res/public下
 * main.js libs的路径前加public
 * index.html ace路径前加res/public/
