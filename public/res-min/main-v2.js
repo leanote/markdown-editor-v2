@@ -12089,7 +12089,7 @@ define('extensions/markdownExtra',[
 
     return markdownExtra;
 });
-define('libs/mathjax_init',[
+define('public/libs/mathjax_init',[
     "settings",
 ], function(settings/*, mathjaxConfigJS*/) {
     var script = document.createElement('script');
@@ -16652,16 +16652,8 @@ define('core',[
         });
         // Custom insert image dialog
         editor.hooks.set("insertImageDialog", function(callback) {
-            core.insertLinkCallback = callback;
-            if(core.catchModal) {
-                return true;
-            }
-            utils.resetModalInputs();
-            var ifr = $("#leauiIfrForMD");
-            if(!ifr.attr('src')) {
-                ifr.attr('src', '/album/index?md=1');
-            }
-            $(".modal-insert-image").modal();
+            // life, atom
+            insertLocalImage();
             return true;
         });
 
@@ -16906,7 +16898,8 @@ define('core',[
 
         // 弹框显示markdown语法
         $('#wmd-help-button').click(function() {
-            window.open("http://leanote.com/blog/post/531b263bdfeb2c0ea9000002");
+            var url = 'http://leanote.com/blog/post/531b263bdfeb2c0ea9000002';
+            openExternal(url);
         });
 
         // Load images
@@ -16931,29 +16924,29 @@ requirejs.config({
     paths: {
         underscore: 'bower-libs/underscore/underscore',
         crel: 'bower-libs/crel/crel',
-        mathjax: 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
+        mathjax: 'public/libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
         'jquery-waitforimages': 'bower-libs/waitForImages/jquery.waitforimages',
         'pagedown-ace': 'bower-libs/pagedown-ace/Markdown.Editor',
-        'pagedown-light': 'libs/Markdown.Editor.light',
+        'pagedown-light': 'public/libs/Markdown.Editor.light',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
-        'ace/requirejs/text': 'libs/ace_text',
-        'ace/commands/default_commands': 'libs/ace_commands',
+        'ace/requirejs/text': 'public/libs/ace_text',
+        'ace/commands/default_commands': 'public/libs/ace_commands',
         xregexp: 'bower-libs/xregexp/xregexp-all',
        
         // 以下, 异步加载, 不常用
-        Diagram: 'libs/uml/sequence-diagram.min',
-        'diagram-grammar': 'libs/uml/diagram-grammar.min',
-        raphael: 'libs/uml/raphael.min',
-        'flow-chart': 'libs/uml/flowchart.amd-1.3.4.min'
+        Diagram: 'public/libs/uml/sequence-diagram.min',
+        'diagram-grammar': 'public/libs/uml/diagram-grammar.min',
+        raphael: 'public/libs/uml/raphael.min',
+        'flow-chart': 'public/libs/uml/flowchart.amd-1.3.4.min'
     },
     shim: {
         underscore: {
             exports: '_'
         },
         mathjax: [
-            'libs/mathjax_init'
+            'public/libs/mathjax_init'
         ],
         'pagedown-extra': [
             'pagedown-ace'

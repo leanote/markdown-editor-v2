@@ -7,29 +7,29 @@ requirejs.config({
     paths: {
         underscore: 'bower-libs/underscore/underscore',
         crel: 'bower-libs/crel/crel',
-        mathjax: 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
+        mathjax: 'public/libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
         'jquery-waitforimages': 'bower-libs/waitForImages/jquery.waitforimages',
         'pagedown-ace': 'bower-libs/pagedown-ace/Markdown.Editor',
-        'pagedown-light': 'libs/Markdown.Editor.light',
+        'pagedown-light': 'public/libs/Markdown.Editor.light',
         'pagedown-extra': 'bower-libs/pagedown-extra/Markdown.Extra',
-        'ace/requirejs/text': 'libs/ace_text',
-        'ace/commands/default_commands': 'libs/ace_commands',
+        'ace/requirejs/text': 'public/libs/ace_text',
+        'ace/commands/default_commands': 'public/libs/ace_commands',
         xregexp: 'bower-libs/xregexp/xregexp-all',
        
         // 以下, 异步加载, 不常用
-        Diagram: 'libs/uml/sequence-diagram.min',
-        'diagram-grammar': 'libs/uml/diagram-grammar.min',
-        raphael: 'libs/uml/raphael.min',
-        'flow-chart': 'libs/uml/flowchart.amd-1.3.4.min'
+        Diagram: 'public/libs/uml/sequence-diagram.min',
+        'diagram-grammar': 'public/libs/uml/diagram-grammar.min',
+        raphael: 'public/libs/uml/raphael.min',
+        'flow-chart': 'public/libs/uml/flowchart.amd-1.3.4.min'
     },
     shim: {
         underscore: {
             exports: '_'
         },
         mathjax: [
-            'libs/mathjax_init'
+            'public/libs/mathjax_init'
         ],
         'pagedown-extra': [
             'pagedown-ace'
