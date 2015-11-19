@@ -155,3 +155,11 @@ window.require = {
 -->
 </body>
 ```
+
+## 与Web上的不同
+* 将res/libs目录移到res/public下
+* main.js libs的路径前加public
+* index.html ace路径前加res/public/
+* core.js 插入图片
+* core.js 打开Markdown帮助
+* raphael eve问题

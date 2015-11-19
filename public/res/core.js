@@ -326,16 +326,8 @@ define([
         });
         // Custom insert image dialog
         editor.hooks.set("insertImageDialog", function(callback) {
-            core.insertLinkCallback = callback;
-            if(core.catchModal) {
-                return true;
-            }
-            utils.resetModalInputs();
-            var ifr = $("#leauiIfrForMD");
-            if(!ifr.attr('src')) {
-                ifr.attr('src', '/album/index?md=1');
-            }
-            $(".modal-insert-image").modal();
+            // life, atom
+            insertLocalImage();
             return true;
         });
 
@@ -580,7 +572,8 @@ define([
 
         // 弹框显示markdown语法
         $('#wmd-help-button').click(function() {
-            window.open("http://leanote.com/blog/post/531b263bdfeb2c0ea9000002");
+            var url = 'http://leanote.com/blog/post/531b263bdfeb2c0ea9000002';
+            openExternal(url);
         });
 
         // Load images
