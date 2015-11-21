@@ -1377,10 +1377,9 @@ define('constants',[], function() {
     var constants = {};
     constants.EDITOR_DEFAULT_PADDING = 5;
     constants.fontSize = 14;
-    constants.fontFamily = 'Menlo, Consolas, "Courier New", Courier, monospace, "Microsoft YaHei", "微软雅黑"';
+    constants.fontFamily = "Menlo, 'Ubuntu Mono', Consolas, 'Courier New', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', 'Microsoft Yahei', sans-serif;";
     return constants;
 });
-
 /*!
  * XRegExp-All 3.0.0-pre
  * <http://xregexp.com/>
