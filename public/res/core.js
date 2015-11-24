@@ -252,6 +252,7 @@ define([
         if (window.lightMode) {
             return;
         }
+        var scrollTop = aceEditor.renderer.getScrollTop();
         var pos = aceEditor.getCursorPosition();
         var content = MD.getContent();
 
@@ -283,6 +284,7 @@ define([
         eventMgr.onToggleMode(editor);
         core._moveCursorTo(pos.row, pos.column);
         $editorElt.focus();
+        $('#wmd-input').scrollTop(scrollTop);
     };
 
     // 切换到Ace编辑器
@@ -290,8 +292,9 @@ define([
         if (!window.lightMode) {
             return;
         }
+        var scrollTop = $('#wmd-input').scrollTop(); // : 
         var pos = core._getTextareaCusorPosition();
-        console.log(pos);
+        // console.log(pos);
         var content = MD.getContent();
 
         core._resetToolBar();
@@ -329,6 +332,7 @@ define([
         eventMgr.onToggleMode(editor);
         core._moveCursorTo(pos.row, pos.column);
         aceEditor.focus();
+        aceEditor.session.setScrollTop(scrollTop);
     };
 
     core._initMarkdownConvert = function () {

@@ -299,7 +299,7 @@ define([
         };
 
         // editor 滚动时操作
-        var timeout = isOnToggleMode ? 1000 : 0;
+        var timeout = isOnToggleMode ? 500 : 0;
         setTimeout(function () {
             if(window.lightMode) {
                 $textareaElt.scroll(handleEditorScroll);
@@ -317,9 +317,10 @@ define([
 
         buildSections();
 
-        isScrollPreview = true;
-        isScrollEditor = false;
-        doScrollLink();
+        // 可以不要这一段
+        // isScrollPreview = true;
+        // isScrollEditor = false;
+        // doScrollLink();
 
         // console.log('-----------------')
         onToggleMode(true);
