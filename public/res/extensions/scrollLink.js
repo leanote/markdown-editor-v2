@@ -259,8 +259,12 @@ define([
         mdSectionList = [];
     };
 
-    var scrollAdjust = false;
-    scrollLink.onReady = function() {
+    function initScrollEvent () {
+
+    }
+
+    // 切换编辑模式时
+    var onToggleMode = function (isOnToggleMode) {
         $previewElt = $(".preview-container");
         $textareaElt = $("#wmd-input");
         // This helper is used to measure sections height in light mode
@@ -281,12 +285,45 @@ define([
                 doScrollLink();
             }
         };
-        if(window.lightMode) {
-            $textareaElt.scroll(handleEditorScroll);
-        }
-        else {
-            aceEditor.session.on("changeScrollTop", handleEditorScroll);
-        }
+
+        // editor 滚动时操作
+        var timeout = isOnToggleMode ? 1000 : 0;
+            setTimeout(function () {
+            if(window.lightMode) {
+                $textareaElt.scroll(handleEditorScroll);
+            }
+            else {
+                aceEditor.session.on("changeScrollTop", handleEditorScroll);
+            }
+        }, timeout);
+    };
+
+    scrollLink.onToggleMode = function () {
+        $previewElt = $(".preview-container");
+        $textareaElt = $("#wmd-input");
+        $textareaHelperElt = $('.textarea-helper');
+
+        buildSections();
+
+        isScrollPreview = true;
+        isScrollEditor = false;
+        doScrollLink();
+
+        // console.log('-----------------')
+        onToggleMode(true);
+
+        // 左侧滚动到之前的位置
+        // $previewElt.scrollTop($previewElt.scrollTop());
+    };
+
+    var scrollAdjust = false;
+    scrollLink.onReady = function() {
+        $previewElt = $(".preview-container");
+        $textareaElt = $("#wmd-input");
+        // This helper is used to measure sections height in light mode
+        $textareaHelperElt = $('.textarea-helper');
+
+        onToggleMode();
 
         // 添加目录, 两种目录
         // Reimplement anchor scrolling to work without preview

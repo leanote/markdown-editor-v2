@@ -99,25 +99,6 @@ function log(o) {
 <textarea id="life">leanote Markdown 语法手册
 
 
-```sequence
-Alice->Bob: Hello Bob, how are you?
-Note right of Bob: Bob thinks
-Bob-->Alice: I am good thanks!
-```
- 
-And flow charts like this:
- 
-```flow
-st=>start: Start
-e=>end
-op=>operation: My Operation
-cond=>condition: Yes or No?
- 
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
-
 ```
 function a() {
 }
@@ -140,7 +121,6 @@ You can also render sequence diagrams like this:
 
 大家可复制以下的文字, 粘贴到新建的Markdown笔记中看看效果.
 
-[toc]
 
 # leanote Markdown 语法手册
 
@@ -493,6 +473,25 @@ Alipay Donation:
  
 ![leantoe donation](http://leanote.org/images/leanote/leanote_alipay.jpg)
  
+
+```sequence
+Alice->Bob: Hello Bob, how are you?
+Note right of Bob: Bob thinks
+Bob-->Alice: I am good thanks!
+```
+ 
+And flow charts like this:
+ 
+```flow
+st=>start: Start
+e=>end
+op=>operation: My Operation
+cond=>condition: Yes or No?
+ 
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
  
   [^Leanote]: [Leanote](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
  
@@ -527,7 +526,7 @@ Alipay Donation:
     };
 
     function setEditorContent(content) {
-      if(MD) {
+      if(MD && MD.setContent) {
         MD.setContent(content);
       } else {
         clearIntervalForSetContent = setTimeout(function() {
