@@ -23,6 +23,9 @@ define([
                 regexp = '^```.*\\n[\\s\\S]*?\\n```|' + regexp; // Fenced block delimiters
             }
         }
+
+        // TODO 代码```
+
         if(mathJax.enabled) {
             // Math delimiter has to follow 1 empty line to be considered as a section delimiter
             regexp = '^[ \\t]*\\n\\$\\$[\\s\\S]*?\\$\\$|' + regexp; // $$ math block delimiters
@@ -33,6 +36,8 @@ define([
         
         var converter = editor.getConverter();
         converter.hooks.chain("preConversion", function(text) {
+            // console.log('preConversion');
+            // console.log(text);
             eventMgr.previewStartTime = new Date();
             var tmpText = text + "\n\n";
             function addSection(startOffset, endOffset) {

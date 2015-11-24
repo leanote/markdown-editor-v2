@@ -220,9 +220,7 @@ define([
         window.lightMode = true;
         MD.clearUndo();
 
-        eventMgr.onToggleMode();
-
-        editor.refreshPreview();
+        eventMgr.onToggleMode(editor);
     };
 
     // 切换到Ace编辑器
@@ -264,9 +262,7 @@ define([
         window.lightMode = false;
         MD.clearUndo();
 
-        eventMgr.onToggleMode();
-
-        editor.refreshPreview();
+        eventMgr.onToggleMode(editor);
     };
 
     core._initMarkdownConvert = function () {
@@ -398,7 +394,6 @@ define([
         previewWrapper = function(makePreview) {
             var debouncedMakePreview = _.debounce(makePreview, 500);
             return function() {
-                console.log('preview-');
                 if(documentContent === undefined) {
                     makePreview();
 

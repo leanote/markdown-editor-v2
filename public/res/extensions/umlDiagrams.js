@@ -98,12 +98,15 @@ define([
 		});
 	}
 
-	umlDiagrams.onPagedownConfigure = function(editor) {
+	function onToggleMode(editor) {
 		editor.hooks.chain("onPreviewRefresh", function() {
 			renderSequence();
 			renderFlow();
 		});
-	};
+	}
+
+	umlDiagrams.onPagedownConfigure = onToggleMode;
+	umlDiagrams.onToggleMode = onToggleMode;
 
 	return umlDiagrams;
 });

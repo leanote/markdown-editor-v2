@@ -180,7 +180,8 @@ define([
         }
     }
 
-    partialRendering.onPagedownConfigure = function(editor) {
+    // 初始化时, toggleMode时
+    function onPagedownConfigure(editor) {
         converter = editor.getConverter();
         converter.hooks.chain("preConversion", function() {
             var result = _.map(modifiedSections, function(section) {
@@ -192,6 +193,13 @@ define([
         editor.hooks.chain("onPreviewRefresh", function() {
             refreshSections();
         });
+    }
+
+    partialRendering.onPagedownConfigure = function(editor) {
+         onPagedownConfigure(editor);
+    };
+    partialRendering.onToggleMode = function(editor) {
+         onPagedownConfigure(editor);
     };
 
     partialRendering.onInit = function() {
