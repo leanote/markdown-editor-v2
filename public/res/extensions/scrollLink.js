@@ -300,7 +300,7 @@ define([
 
         // editor 滚动时操作
         var timeout = isOnToggleMode ? 1000 : 0;
-            setTimeout(function () {
+        setTimeout(function () {
             if(window.lightMode) {
                 $textareaElt.scroll(handleEditorScroll);
             }

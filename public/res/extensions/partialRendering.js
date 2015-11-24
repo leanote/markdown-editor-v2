@@ -195,12 +195,8 @@ define([
         });
     }
 
-    partialRendering.onPagedownConfigure = function(editor) {
-         onPagedownConfigure(editor);
-    };
-    partialRendering.onToggleMode = function(editor) {
-         onPagedownConfigure(editor);
-    };
+    partialRendering.onPagedownConfigure = onPagedownConfigure;
+    partialRendering.onToggleMode = onPagedownConfigure;
 
     partialRendering.onInit = function() {
         if(markdownExtra.enabled) {

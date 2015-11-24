@@ -25,6 +25,7 @@ define([
         }
 
         // TODO 代码```
+        // regexp = '^```$|' + regexp;
 
         if(mathJax.enabled) {
             // Math delimiter has to follow 1 empty line to be considered as a section delimiter

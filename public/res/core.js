@@ -142,7 +142,8 @@ define([
     var $mdKeyboardMode;
 
     core._resetToolBar = function () {
-        $('#wmd-button-bar').html(`<ul class="nav left-buttons">
+        /*
+        <ul class="nav left-buttons">
                 <li class="wmd-button-group1 btn-group"></li>
             </ul>
             <ul class="nav left-buttons">
@@ -158,7 +159,9 @@ define([
                 <li class="wmd-button-group6 btn-group">
                   <li class="wmd-button btn btn-success" id="wmd-help-button" title="Markdown syntax" style="left: 0px; display: none;"><span style="display: none; background-position: 0px 0px;"></span><i class="fa fa-question-circle"></i></li>
                 </li>
-            </ul>`);
+            </ul>
+         */
+        $('#wmd-button-bar').html('<ul class="nav left-buttons"><li class="wmd-button-group1 btn-group"></li></ul><ul class="nav left-buttons"><li class="wmd-button-group2 btn-group"></li></ul><ul class="nav left-buttons"><li class="wmd-button-group3 btn-group"></li></ul><ul class="nav left-buttons"><li class="wmd-button-group4 btn-group"></li></ul><ul class="nav left-buttons"><li class="wmd-button-group6 btn-group"></li><li class="wmd-button btn btn-success" id="wmd-help-button" title="' + getMsg('Markdown syntax') +'" style="left:0;display:none"><span style="display:none;background-position:0 0"></span><i class="fa fa-question-circle"></i></li></ul>');
     };
 
     core._setEditorHook = function () {
@@ -187,11 +190,69 @@ define([
         editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
     };
 
+    // 行
+    core._moveCursorTo = function (row, column) {
+        if (!window.lightMode) {
+            aceEditor.moveCursorTo(row, column);
+            return;
+        }
+
+        // 得到offset
+        var offset = core._getTextareaCursorOffset(row, column);
+
+        $('#wmd-input').get(0).setSelectionRange(offset, offset);
+        $('#wmd-input').focus();
+    };
+
+    // 得到文本编辑器的位置
+    // 返回 {row: 0, column: 0}
+    core._getTextareaCusorPosition = function () {
+        var offset = $('#wmd-input').get(0).selectionStart;
+        if (offset == 0) {
+            return {row: 0, column: 0};
+        }
+        var content = MD.getContent() || '';
+        var contentArr = content.split('\n');
+        var to = 0;
+        var row = 0;
+        var column = 0;
+        for (var row = 0; row < contentArr.length; ++row) {
+            var line = contentArr[row];
+            
+            if (offset <= line.length) {
+                column = offset;
+                break;
+            }
+            else {
+                offset -= line.length;
+            }
+
+            // 下一行\n
+            offset--;
+        }
+        return {row: row, column: column};
+    };
+
+    // 通过row, column 得到offset
+    core._getTextareaCursorOffset = function (row, column) {
+        var offset = 0;
+         // 得到offset
+        var content = MD.getContent();
+        var contentArr = content.split('\n');
+        var offset = 0;
+        for (var i = 0; i < contentArr.length && i < row; ++i) {
+            offset += contentArr[i].length + 1;  // \n 算1个
+        }
+        offset += column;
+        return offset + 1;
+    }
+
     // 切换到轻量编辑器
     core.initLightEditor = function () {
         if (window.lightMode) {
             return;
         }
+        var pos = aceEditor.getCursorPosition();
         var content = MD.getContent();
 
         core._resetToolBar();
@@ -199,7 +260,7 @@ define([
 
         // In light mode, we replace ACE with a textarea
         $('#wmd-input').replaceWith(function() {
-            return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
+            return $('<textarea id="wmd-input" class="ace_editor ace-tm wmd-textarea">').addClass(this.className).addClass('form-control');
         });
 
         core._pre();
@@ -219,8 +280,9 @@ define([
 
         window.lightMode = true;
         MD.clearUndo();
-
         eventMgr.onToggleMode(editor);
+        core._moveCursorTo(pos.row, pos.column);
+        $editorElt.focus();
     };
 
     // 切换到Ace编辑器
@@ -228,6 +290,8 @@ define([
         if (!window.lightMode) {
             return;
         }
+        var pos = core._getTextareaCusorPosition();
+        console.log(pos);
         var content = MD.getContent();
 
         core._resetToolBar();
@@ -263,6 +327,8 @@ define([
         MD.clearUndo();
 
         eventMgr.onToggleMode(editor);
+        core._moveCursorTo(pos.row, pos.column);
+        aceEditor.focus();
     };
 
     core._initMarkdownConvert = function () {
@@ -451,6 +517,7 @@ define([
         $("#wmd-undo-button").append($('<i class="fa fa-undo">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="fa fa-repeat">')).appendTo($btnGroupElt);
 
+
         core._initModeToolbar();
     };
 
@@ -473,10 +540,11 @@ define([
             core.initEditor(desc);
         };
         MD.getContent = function () {
-            if(aceEditor !== undefined) {
+            if(!window.lightMode) {
                 return aceEditor.getValue();
             }
-            return $editorElt.val();
+            return $('#wmd-input').val();
+            // return $editorElt.val(); // 有延迟?
         };
         // 重新refresh preview
         MD.onResize = function () {
@@ -509,6 +577,9 @@ define([
 
         MD.setModeName = function(mode) {
             var msg = getMsg(mode);
+            if (mode === 'textarea') {
+                mode = 'Normal';
+            }
             $mdKeyboardMode.html(msg);
         };
 
@@ -619,7 +690,7 @@ define([
         if(window.lightMode) {
             // In light mode, we replace ACE with a textarea
             $('#wmd-input').replaceWith(function() {
-                return $('<textarea id="wmd-input">').addClass(this.className).addClass('form-control');
+                return $('<textarea id="wmd-input" class="ace_editor ace-tm wmd-textarea">').addClass(this.className).addClass('form-control');
             });
         }
 
@@ -734,7 +805,7 @@ define([
         });
 
         // 弹框显示markdown语法
-        $('#wmd-help-button').click(function() {
+        $('#wmd-button-bar').on('click', '#wmd-help-button', function() {
             window.open("http://leanote.com/blog/post/531b263bdfeb2c0ea9000002");
         });
 
