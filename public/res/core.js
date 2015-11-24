@@ -139,6 +139,8 @@ define([
 
     var lightEditor;
 
+    var $mdKeyboardMode;
+
     core._resetToolBar = function () {
         $('#wmd-button-bar').html(`<ul class="nav left-buttons">
                 <li class="wmd-button-group1 btn-group"></li>
@@ -152,7 +154,6 @@ define([
             <ul class="nav left-buttons">
                 <li class="wmd-button-group4 btn-group"></li>
             </ul>
-            <!-- 帮助 -->
              <ul class="nav left-buttons">
                 <li class="wmd-button-group6 btn-group">
                   <li class="wmd-button btn btn-success" id="wmd-help-button" title="Markdown syntax" style="left: 0px; display: none;"><span style="display: none; background-position: 0px 0px;"></span><i class="fa fa-question-circle"></i></li>
@@ -182,6 +183,8 @@ define([
             $(".modal-insert-image").modal();
             return true;
         });
+
+        editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
     };
 
     // 切换到轻量编辑器
@@ -218,6 +221,8 @@ define([
         MD.clearUndo();
 
         eventMgr.onToggleMode();
+
+        editor.refreshPreview();
     };
 
     // 切换到Ace编辑器
@@ -260,6 +265,8 @@ define([
         MD.clearUndo();
 
         eventMgr.onToggleMode();
+
+        editor.refreshPreview();
     };
 
     core._initMarkdownConvert = function () {
@@ -391,6 +398,7 @@ define([
         previewWrapper = function(makePreview) {
             var debouncedMakePreview = _.debounce(makePreview, 500);
             return function() {
+                console.log('preview-');
                 if(documentContent === undefined) {
                     makePreview();
 
@@ -413,7 +421,7 @@ define([
         };
 
         eventMgr.onPagedownConfigure(editor);
-        editor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
+        
         if(window.lightMode) {
             editor.run(previewWrapper);
             editor.undoManager.reinit(initDocumentContent, fileDesc.editorStart, fileDesc.editorEnd, fileDesc.editorScrollTop);
@@ -448,50 +456,7 @@ define([
         $("#wmd-undo-button").append($('<i class="fa fa-undo">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="fa fa-repeat">')).appendTo($btnGroupElt);
 
-        if (!window.lightMode) {
-
-            $('.wmd-button-group4').html(['<div class="btn-group">',
-                    '<button type="button" class="wmd-button btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' + getMsg('Edit mode') + '">',
-                      '<i class="fa fa-gear"></i> <i id="md-keyboard-mode"></i>',
-                    '</button>',
-                    '<ul class="dropdown-menu wmd-mode">',
-                      '<li><a href="#" data-mode="textarea">' + getMsg('Normal mode') + '</a></li>',
-                      '<li><a href="#" data-mode="Vim">' + getMsg('Vim mode') + '</a></li>',
-                      '<li><a href="#" data-mode="Emacs">' + getMsg('Emacs mode') + '</a></li>',
-                    '</ul>',
-                  '</div>'].join(''));
-
-            $("#wmd-help-button").show();
-            var $mdKeyboardMode = $('#md-keyboard-mode');
-            
-            MD.changeAceKeyboardMode = function(mode, modeName) {
-                localS.set(localSModeKey, mode);
-                if (mode != 'vim' && mode != 'emacs') {
-                    aceEditor.setKeyboardHandler(MD.defaultKeyboardMode);
-                    $mdKeyboardMode.html('');
-                }
-                else {
-                    aceEditor.setKeyboardHandler("ace/keyboard/" + mode);
-                    $mdKeyboardMode.html(modeName);
-                }
-                aceEditor.focus();
-            }
-            // 编辑模式选择
-            MD.defaultKeyboardMode = aceEditor.getKeyboardHandler();
-            $('.wmd-mode a').click(function () {
-                var mode = $(this).data('mode');
-                MD.changeAceKeyboardMode(mode.toLowerCase(), mode);
-            });
-            // 是否可以从storage中设置md mode
-            if (!window.LEA || (window.LEA && window.LEA.canSetMDModeFromStorage && window.LEA.canSetMDModeFromStorage())) {
-                var userMode = localS.get(localSModeKey);
-                if (userMode) {
-                    var userModeUpper = userMode[0].toUpperCase() + userMode.substr(1);
-                    MD.changeAceKeyboardMode(userMode, userModeUpper);
-                }
-            }
-        }
-
+        core._initModeToolbar();
     };
 
     core.setMDApi = function () {
@@ -547,8 +512,93 @@ define([
             core.initLightEditor();
         };
 
+        MD.setModeName = function(mode) {
+            var msg = getMsg(mode);
+            $mdKeyboardMode.html(msg);
+        };
+
+        MD.changeAceKeyboardMode = function(mode, modeName) {
+            // 保存之
+            localS.set(localSModeKey, mode);
+
+            if (window.lightMode) {
+                if (mode != 'light') {
+                    core.initAceEditor();
+                    if (!MD.defaultKeyboardMode) {
+                        MD.defaultKeyboardMode = aceEditor.getKeyboardHandler();
+                    }
+                }
+            }
+            else {
+                if (mode == 'light') {
+                    core.initLightEditor();
+                    return;
+                }
+            }
+
+            if (mode != 'vim' && mode != 'emacs') {
+                aceEditor.setKeyboardHandler(MD.defaultKeyboardMode);
+            }
+            else {
+                aceEditor.setKeyboardHandler("ace/keyboard/" + mode);
+            }
+            MD.setModeName(modeName);
+
+            if (mode != 'light') {
+                aceEditor.focus();
+            }
+        };
+
         // MD API end
         //==============
+    };
+
+    core._initModeToolbar = function () {
+        // 可以切换
+        if (!window.lightModeForce) {
+            $('.wmd-button-group4').html(['<div class="btn-group">',
+                    '<button type="button" class="wmd-button btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="' + getMsg('Edit mode') + '">',
+                      '<i class="fa fa-gear"></i> <i id="md-keyboard-mode"></i>',
+                    '</button>',
+                    '<ul class="dropdown-menu wmd-mode">',
+                      '<li><a href="#" data-mode="Normal"><i class="fa fa-check"></i> ' + getMsg('Normal mode') + '</a></li>',
+                      '<li><a href="#" data-mode="Vim"><i class="fa"></i> ' + getMsg('Vim mode') + '</a></li>',
+                      '<li><a href="#" data-mode="Emacs"><i class="fa"></i> ' + getMsg('Emacs mode') + '</a></li>',
+                      '<li role="separator" class="divider"></li>',
+                      '<li><a href="#" data-mode="Light"><i class="fa"></i> ' + getMsg('Light editor') + '</a></li>',
+                    '</ul>',
+                  '</div>'].join(''));
+
+            $("#wmd-help-button").show();
+            $mdKeyboardMode = $('#md-keyboard-mode');
+            
+            // 编辑模式选择
+            $('.wmd-mode a').click(function () {
+                var $this = $(this);
+                var mode = $this.data('mode');
+                MD.changeAceKeyboardMode(mode.toLowerCase(), mode);
+
+                T = $this;
+
+                $this.closest('.wmd-mode').find('i').removeClass('fa-check');
+                $this.find('i').addClass('fa-check');
+            });
+
+            if (!window.LEA 
+                || (window.LEA 
+                    && window.LEA.canSetMDModeFromStorage 
+                    && window.LEA.canSetMDModeFromStorage())) {
+                var aceMode = localS.get(localSModeKey);
+                if (!aceMode) {
+                    return;
+                }
+                var aceModeUpper = aceMode[0].toUpperCase() + aceMode.substr(1);
+                $('.wmd-mode i').removeClass('fa-check');
+                $('.wmd-mode a[data-mode="' + aceModeUpper + '"] i').addClass('fa-check');
+
+                MD.setModeName(aceModeUpper);
+            }
+        }
     };
 
     core._pre = function () {
@@ -564,7 +614,6 @@ define([
     var isDocumentPanelShown = false;
     var isMenuPanelShown = false;
     core.onReady = function() {
-
         $navbarElt = $('.navbar');
         $leftBtnElts = $navbarElt.find('.left-buttons');
         $rightBtnElts = $navbarElt.find('.right-buttons');
@@ -594,9 +643,25 @@ define([
         eventMgr.onReady();
         core._initMarkdownConvert();
         core.initEditor();
+        core.setMDApi();
         core._setToolBars();
 
-        core.setMDApi();
+        // 默认Ace编辑模式
+        if (!window.lightMode) {
+            MD.defaultKeyboardMode = aceEditor.getKeyboardHandler();
+        }
+        // 初始时
+        // 是否可以从storage中设置md mode
+        if (!window.LEA 
+            || (window.LEA 
+                && window.LEA.canSetMDModeFromStorage 
+                && window.LEA.canSetMDModeFromStorage())) {
+            var aceMode = localS.get(localSModeKey);
+            if (!window.lightMode && aceMode) {
+                var aceModeUpper = aceMode[0].toUpperCase() + aceMode.substr(1);
+                MD.changeAceKeyboardMode(aceMode, aceModeUpper);
+            }
+        }
     };
 
     // Other initialization that are not prioritary

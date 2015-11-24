@@ -1,3 +1,15 @@
+/**
+scrollLink原理
+
+1) preview分出一个个section
+2) Md text通过这些section一个个取高度, 成mdSection
+3) 将mdSection和previewSection建立映射
+4) 滚动时, 通过scollTop()得到section的位置, 到另一边的section得到另一方scrollTop(), 滚动之
+
+注意要点:
+light下得到左侧的mdSection是通过helper, 每一个section的文字设到helper容器内得到高度. 所以helper的样式要和wmd-input的样式要一模一样, 不然就会有误差!!
+
+ */
 define([
     // "jquery",
     "underscore",

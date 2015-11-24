@@ -90,7 +90,7 @@ else {
     }
 }
 
-window.lightMode = true;
+// window.lightMode = true;
 
 // Keep the theme in a global variable
 window.theme = localStorage.themeV3 || 'default';
