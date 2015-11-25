@@ -36,31 +36,33 @@ function log(o) {
                 <div class="layout-wrapper-l2">
                     <div class="navbar navbar-default">
                         <div class="navbar-inner" id="wmd-button-bar">
-                            <ul class="nav left-buttons">
-                                <li class="wmd-button-group1 btn-group"></li>
-                            </ul>
-                            <ul class="nav left-buttons">
-                                <li class="wmd-button-group2 btn-group"></li>
-                            </ul>
-                            <ul class="nav left-buttons">
-                                <li class="wmd-button-group3 btn-group"></li>
-                            </ul>
-                            <ul class="nav left-buttons">
-                                <li class="wmd-button-group4 btn-group"></li>
-                            </ul>
-                            <!-- 帮助 -->
-                             <ul class="nav left-buttons">
-                                <li class="wmd-button-group6 btn-group">
-                                  <li class="wmd-button btn btn-success" id="wmd-help-button" title="Markdown syntax" style="left: 0px; display: none;"><span style="display: none; background-position: 0px 0px;"></span><i class="fa fa-question-circle"></i></li>
-                                </li>
-                            </ul>
+                            <div class="wmd-button-bar-inner clearfix">
+                              <ul class="nav left-buttons">
+                                  <li class="wmd-button-group1 btn-group"></li>
+                              </ul>
+                              <ul class="nav left-buttons">
+                                  <li class="wmd-button-group2 btn-group"></li>
+                              </ul>
+                              <ul class="nav left-buttons">
+                                  <li class="wmd-button-group3 btn-group"></li>
+                              </ul>
+                              <ul class="nav left-buttons">
+                                  <li class="wmd-button-group4 btn-group"></li>
+                              </ul>
+                              <!-- 帮助 -->
+                               <ul class="nav left-buttons">
+                                  <li class="wmd-button-group6 btn-group">
+                                    <li class="wmd-button btn btn-success" id="wmd-help-button" title="Markdown syntax" style="left: 0px; display: none;"><span style="display: none; background-position: 0px 0px;"></span><i class="fa fa-question-circle"></i></li>
+                                  </li>
+                              </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="layout-wrapper-l3">
                       <div id="left-column">
                           <pre id="wmd-input" class="form-control"><div id="wmd-input-sub" class="editor-content mousetrap" contenteditable=true></div><div class="editor-margin"></div></pre>
+                          <!-- v2 markdown lightmode需要 -->
                           <div class="textarea-helper"></div>
-                          <!-- <textarea id="wmd-input"></textarea> -->
                         </div>
                         <div id="right-column">
                         <div class="preview-panel panel-open" id="preview-panel">
