@@ -1,3 +1,15 @@
+/**
+scrollLink原理
+
+1) preview分出一个个section
+2) Md text通过这些section一个个取高度, 成mdSection
+3) 将mdSection和previewSection建立映射
+4) 滚动时, 通过scollTop()得到section的位置, 到另一边的section得到另一方scrollTop(), 滚动之
+
+注意要点:
+light下得到左侧的mdSection是通过helper, 每一个section的文字设到helper容器内得到高度. 所以helper的样式要和wmd-input的样式要一模一样, 不然就会有误差!!
+
+ */
 define([
     // "jquery",
     "underscore",
@@ -259,8 +271,12 @@ define([
         mdSectionList = [];
     };
 
-    var scrollAdjust = false;
-    scrollLink.onReady = function() {
+    function initScrollEvent () {
+
+    }
+
+    // 切换编辑模式时
+    var onToggleMode = function (isOnToggleMode) {
         $previewElt = $(".preview-container");
         $textareaElt = $("#wmd-input");
         // This helper is used to measure sections height in light mode
@@ -281,12 +297,46 @@ define([
                 doScrollLink();
             }
         };
-        if(window.lightMode) {
-            $textareaElt.scroll(handleEditorScroll);
-        }
-        else {
-            aceEditor.session.on("changeScrollTop", handleEditorScroll);
-        }
+
+        // editor 滚动时操作
+        var timeout = isOnToggleMode ? 500 : 0;
+        setTimeout(function () {
+            if(window.lightMode) {
+                $textareaElt.scroll(handleEditorScroll);
+            }
+            else {
+                aceEditor.session.on("changeScrollTop", handleEditorScroll);
+            }
+        }, timeout);
+    };
+
+    scrollLink.onToggleMode = function () {
+        $previewElt = $(".preview-container");
+        $textareaElt = $("#wmd-input");
+        $textareaHelperElt = $('.textarea-helper');
+
+        buildSections();
+
+        // 可以不要这一段
+        // isScrollPreview = true;
+        // isScrollEditor = false;
+        // doScrollLink();
+
+        // console.log('-----------------')
+        onToggleMode(true);
+
+        // 左侧滚动到之前的位置
+        // $previewElt.scrollTop($previewElt.scrollTop());
+    };
+
+    var scrollAdjust = false;
+    scrollLink.onReady = function() {
+        $previewElt = $(".preview-container");
+        $textareaElt = $("#wmd-input");
+        // This helper is used to measure sections height in light mode
+        $textareaHelperElt = $('.textarea-helper');
+
+        onToggleMode();
 
         // 添加目录, 两种目录
         // Reimplement anchor scrolling to work without preview

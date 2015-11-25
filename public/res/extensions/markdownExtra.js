@@ -30,6 +30,15 @@ define([
         eventMgr = eventMgrParameter;
     };
 
+    function onToggleMode(editor) {
+        editor.hooks.chain("onPreviewRefresh", function () {
+            $('#preview-contents pre').addClass('prettyprint'); // 不能加linenums, 加了后, uml不能显示
+            prettify.prettyPrint();
+        });
+    }
+
+    markdownExtra.onToggleMode = onToggleMode;
+
     markdownExtra.onPagedownConfigure = function(editor) {
         var converter = editor.getConverter();
         if(markdownExtra.config.intraword === true) {
@@ -55,10 +64,8 @@ define([
         };
       
         extraOptions.highlighter = "prettify";
-        editor.hooks.chain("onPreviewRefresh", function () {
-            $('#preview-contents pre').addClass('prettyprint'); // 不能加linenums, 加了后, uml不能显示
-            prettify.prettyPrint();
-        });
+        
+        onToggleMode(editor);
 
         Markdown.Extra.init(converter, extraOptions);
     };

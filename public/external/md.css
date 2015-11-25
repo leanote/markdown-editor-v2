@@ -1628,3 +1628,11 @@ a.input-group-addon {
   border-bottom: 1px dotted red;
   margin-bottom: -1px;
 }
+
+/*必须和wmd-input一样*/
+.textarea-helper {
+  padding: 10px; */
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}

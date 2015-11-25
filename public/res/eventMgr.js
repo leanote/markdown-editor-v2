@@ -180,6 +180,8 @@ define([
     addEventHook("onFileOpen");
     addEventHook("onFileClosed");
     addEventHook("onContentChanged");
+
+    addEventHook('onToggleMode');
     // addEventHook("onTitleChanged");
 
     // Operations on folders
