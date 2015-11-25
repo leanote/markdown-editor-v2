@@ -13162,9 +13162,9 @@ define('extensions/scrollLink',[
         buildSections();
 
         // 可以不要这一段
-        isScrollPreview = true;
-        isScrollEditor = false;
-        doScrollLink();
+        // isScrollPreview = true;
+        // isScrollEditor = false;
+        // doScrollLink();
 
         // console.log('-----------------')
         onToggleMode(true);
@@ -16315,6 +16315,12 @@ define('shortcutMgr',[
 
 define("pagedown-light", function(){});
 
+/**
+ * 已知BUG:
+ * 从light切换到normal, 快捷键没用了
+ *
+ */
+
 /*globals Markdown, requirejs */
 define('core',[
     "underscore",
@@ -16569,6 +16575,7 @@ define('core',[
         if (window.lightMode) {
             return;
         }
+        var scrollTop = aceEditor.renderer.getScrollTop();
         var pos = aceEditor.getCursorPosition();
         var content = MD.getContent();
 
@@ -16600,6 +16607,10 @@ define('core',[
         eventMgr.onToggleMode(editor);
         core._moveCursorTo(pos.row, pos.column);
         $editorElt.focus();
+        $('#wmd-input').scrollTop(scrollTop);
+
+        // 设置API
+        // MD.insertLink = editor.insertLink;
     };
 
     // 切换到Ace编辑器
@@ -16607,8 +16618,9 @@ define('core',[
         if (!window.lightMode) {
             return;
         }
+        var scrollTop = $('#wmd-input').scrollTop(); // : 
         var pos = core._getTextareaCusorPosition();
-        console.log(pos);
+        // console.log(pos);
         var content = MD.getContent();
 
         core._resetToolBar();
@@ -16646,6 +16658,10 @@ define('core',[
         eventMgr.onToggleMode(editor);
         core._moveCursorTo(pos.row, pos.column);
         aceEditor.focus();
+        aceEditor.session.setScrollTop(scrollTop);
+
+        // 设置API
+        // MD.insertLink = editor.insertLink;
     };
 
     core._initMarkdownConvert = function () {
@@ -16834,7 +16850,6 @@ define('core',[
         $("#wmd-undo-button").append($('<i class="fa fa-undo">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="fa fa-repeat">')).appendTo($btnGroupElt);
 
-
         core._initModeToolbar();
     };
 
@@ -16842,7 +16857,9 @@ define('core',[
         //==============
         // MD API start
 
-        MD = editor;
+        // 设置API
+        // MD.insertLink = editor.insertLink;
+
         MD.focus = function () {
             aceEditor ? aceEditor.focus() : $editorElt.focus();
         };
@@ -16863,14 +16880,25 @@ define('core',[
             return $('#wmd-input').val();
             // return $editorElt.val(); // 有延迟?
         };
+        
+
+        /*
+        if (!window.lightMode) {
+            MD.aceEditor = aceEditor;
+        }
+        */
+
         // 重新refresh preview
         MD.onResize = function () {
             eventMgr.onLayoutResize();
         };
 
-        if (!window.lightMode) {
-            MD.aceEditor = aceEditor;
-        }
+        // aceEditor resize
+        MD.resize = function () {
+            if (!window.lightMode) {
+                aceEditor.resize();
+            }
+        };
 
         MD.clearUndo = function () {
             if(window.lightMode) {
@@ -16892,11 +16920,13 @@ define('core',[
             core.initLightEditor();
         };
 
+        // 以下一行是为了i18n能分析到
+        // getMsg('Light') getMsg('Normal')
         MD.setModeName = function(mode) {
-            var msg = getMsg(mode);
             if (mode === 'textarea') {
                 mode = 'Normal';
             }
+            var msg = getMsg(mode);
             $mdKeyboardMode.html(msg);
         };
 
@@ -16921,6 +16951,7 @@ define('core',[
 
             if (mode != 'vim' && mode != 'emacs') {
                 aceEditor.setKeyboardHandler(MD.defaultKeyboardMode);
+                // shortcutMgr.configureAce(aceEditor);
             }
             else {
                 aceEditor.setKeyboardHandler("ace/keyboard/" + mode);
@@ -17123,16 +17154,7 @@ define('core',[
 
         // 弹框显示markdown语法
         $('#wmd-button-bar').on('click', '#wmd-help-button', function() {
-            window.open("http://leanote.com/blog/post/531b263bdfeb2c0ea9000002");
-        });
-
-        // Load images
-        _.each(document.querySelectorAll('img'), function(imgElt) {
-            var $imgElt = $(imgElt);
-            var src = $imgElt.data('stackeditSrc');
-            if(src) {
-                $imgElt.attr('src', window.baseDir + '/img/' + src);
-            }
+            window.open("http://leanote.leanote.com/post/Leanote-Markdown-Manual");
         });
     });
 

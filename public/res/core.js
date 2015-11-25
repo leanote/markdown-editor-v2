@@ -1,3 +1,9 @@
+/**
+ * 已知BUG:
+ * 从light切换到normal, 快捷键没用了
+ *
+ */
+
 /*globals Markdown, requirejs */
 define([
     "underscore",
@@ -285,6 +291,9 @@ define([
         core._moveCursorTo(pos.row, pos.column);
         $editorElt.focus();
         $('#wmd-input').scrollTop(scrollTop);
+
+        // 设置API
+        // MD.insertLink = editor.insertLink;
     };
 
     // 切换到Ace编辑器
@@ -333,6 +342,9 @@ define([
         core._moveCursorTo(pos.row, pos.column);
         aceEditor.focus();
         aceEditor.session.setScrollTop(scrollTop);
+
+        // 设置API
+        // MD.insertLink = editor.insertLink;
     };
 
     core._initMarkdownConvert = function () {
@@ -521,7 +533,6 @@ define([
         $("#wmd-undo-button").append($('<i class="fa fa-undo">')).appendTo($btnGroupElt);
         $("#wmd-redo-button").append($('<i class="fa fa-repeat">')).appendTo($btnGroupElt);
 
-
         core._initModeToolbar();
     };
 
@@ -529,7 +540,9 @@ define([
         //==============
         // MD API start
 
-        MD = editor;
+        // 设置API
+        // MD.insertLink = editor.insertLink;
+
         MD.focus = function () {
             aceEditor ? aceEditor.focus() : $editorElt.focus();
         };
@@ -550,14 +563,25 @@ define([
             return $('#wmd-input').val();
             // return $editorElt.val(); // 有延迟?
         };
+        
+
+        /*
+        if (!window.lightMode) {
+            MD.aceEditor = aceEditor;
+        }
+        */
+
         // 重新refresh preview
         MD.onResize = function () {
             eventMgr.onLayoutResize();
         };
 
-        if (!window.lightMode) {
-            MD.aceEditor = aceEditor;
-        }
+        // aceEditor resize
+        MD.resize = function () {
+            if (!window.lightMode) {
+                aceEditor.resize();
+            }
+        };
 
         MD.clearUndo = function () {
             if(window.lightMode) {
@@ -579,11 +603,13 @@ define([
             core.initLightEditor();
         };
 
+        // 以下一行是为了i18n能分析到
+        // getMsg('Light') getMsg('Normal')
         MD.setModeName = function(mode) {
-            var msg = getMsg(mode);
             if (mode === 'textarea') {
                 mode = 'Normal';
             }
+            var msg = getMsg(mode);
             $mdKeyboardMode.html(msg);
         };
 
@@ -608,6 +634,7 @@ define([
 
             if (mode != 'vim' && mode != 'emacs') {
                 aceEditor.setKeyboardHandler(MD.defaultKeyboardMode);
+                // shortcutMgr.configureAce(aceEditor);
             }
             else {
                 aceEditor.setKeyboardHandler("ace/keyboard/" + mode);
@@ -810,16 +837,7 @@ define([
 
         // 弹框显示markdown语法
         $('#wmd-button-bar').on('click', '#wmd-help-button', function() {
-            window.open("http://leanote.com/blog/post/531b263bdfeb2c0ea9000002");
-        });
-
-        // Load images
-        _.each(document.querySelectorAll('img'), function(imgElt) {
-            var $imgElt = $(imgElt);
-            var src = $imgElt.data('stackeditSrc');
-            if(src) {
-                $imgElt.attr('src', window.baseDir + '/img/' + src);
-            }
+            window.open("http://leanote.leanote.com/post/Leanote-Markdown-Manual");
         });
     });
 
