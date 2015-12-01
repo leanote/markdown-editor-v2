@@ -378,7 +378,7 @@ define([
         documentContent = undefined;
         var initDocumentContent = fileDesc.content;
 
-        if(aceEditor !== undefined) {
+        if(!window.lightMode) {
             aceEditor.setValue(initDocumentContent, -1);
             // 重新设置undo manage
             // aceEditor.getSession().setUndoManager(new ace.UndoManager());
