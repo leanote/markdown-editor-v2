@@ -41,7 +41,7 @@ define([
     var aceEditor;
     function createAceEditor() {
         aceEditor = ace.edit("wmd-input");
-        // MD.aceEditor = aceEditor;
+        MD.aceEditor = aceEditor;
         // aceEditor.setOption("spellcheck", true);
 
         // vim
@@ -561,6 +561,8 @@ define([
             // Refresh the editor (even if it's the same file)
             core.initEditor(desc);
         };
+        MD.setContent("");
+        // MD.setContent("");
         MD.getContent = function () {
             if(!window.lightMode) {
                 return aceEditor.getValue();
