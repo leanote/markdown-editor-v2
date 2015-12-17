@@ -29,6 +29,7 @@ define([
     "extensions/mathJax",
     "extensions/emailConverter",
     "extensions/scrollLink",
+    "extensions/htmlSanitizer",
     // "extensions/buttonFocusMode",
     // "extensions/buttonSync",
     // "extensions/buttonPublish",
