@@ -119,7 +119,7 @@ define([
 	// Inline Elements - HTML5
 	var inlineElements = _.extend({}, optionalEndTagInlineElements, makeMap("a,abbr,acronym,b," +
 		"bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
-		"samp,small,span,strike,strong,sub,sup,time,tt,u,var"));
+		"samp,small,span,strike,strong,sub,sup,time,tt,u,var,input"));
 
 	// Special Elements (can contain anything)
 	var specialElements = makeMap("script,style");
@@ -140,7 +140,7 @@ define([
 			'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
 			'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
 			'scope,scrolling,shape,size,span,start,summary,target,title,type,' +
-			'valign,value,vspace,width'));
+			'valign,value,vspace,width,checked'));
 
 	// benweet: Add id and allowfullscreen (YouTube iframe)
 	validAttrs.id = true;

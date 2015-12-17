@@ -12842,6 +12842,21 @@ define('extensions/emailConverter',[
     return emailConverter;
 });
 
+define('extensions/todoList',[
+    "classes/Extension",
+], function(Extension) {
+    var todoList = new Extension("todoList", "Markdown todoList", true);
+    todoList.onPagedownConfigure = function(editor) {
+        editor.getConverter().hooks.chain("postConversion", function(text) {
+            return text.replace(/<li>(<p>)?\[([ xX]?)\] /g, function(matched, p, b) {
+                p || (p = '');
+                return !(b == 'x' || b == 'X') ? '<li class="m-todo-item m-todo-empty">' + p + '<input type="checkbox" /> ' : '<li class="m-todo-item m-todo-done">' + p + '<input type="checkbox" checked /> '
+            });
+        });
+    };
+    return todoList;
+});
+
 /**
 scrollLink原理
 
@@ -13351,7 +13366,7 @@ define('extensions/htmlSanitizer',[
 	// Inline Elements - HTML5
 	var inlineElements = _.extend({}, optionalEndTagInlineElements, makeMap("a,abbr,acronym,b," +
 		"bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
-		"samp,small,span,strike,strong,sub,sup,time,tt,u,var"));
+		"samp,small,span,strike,strong,sub,sup,time,tt,u,var,input"));
 
 	// Special Elements (can contain anything)
 	var specialElements = makeMap("script,style");
@@ -13372,7 +13387,7 @@ define('extensions/htmlSanitizer',[
 			'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
 			'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
 			'scope,scrolling,shape,size,span,start,summary,target,title,type,' +
-			'valign,value,vspace,width'));
+			'valign,value,vspace,width,checked'));
 
 	// benweet: Add id and allowfullscreen (YouTube iframe)
 	validAttrs.id = true;
@@ -13837,6 +13852,7 @@ define('eventMgr',[
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",
+    "extensions/todoList",
     "extensions/scrollLink",
     "extensions/htmlSanitizer",
     // "extensions/buttonFocusMode",

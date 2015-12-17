@@ -28,6 +28,7 @@ define([
     "extensions/toc",
     "extensions/mathJax",
     "extensions/emailConverter",
+    "extensions/todoList",
     "extensions/scrollLink",
     "extensions/htmlSanitizer",
     // "extensions/buttonFocusMode",
