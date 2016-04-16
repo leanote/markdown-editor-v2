@@ -17643,7 +17643,7 @@ requirejs.config({
     paths: {
         underscore: 'bower-libs/underscore/underscore',
         crel: 'bower-libs/crel/crel',
-        mathjax: 'libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
+        mathjax: 'libs/MathJax/MathJax.js?a=1&config=TeX-AMS_HTML',
         requirejs: 'bower-libs/requirejs/require',
         'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
         'jquery-waitforimages': 'bower-libs/waitForImages/jquery.waitforimages',
