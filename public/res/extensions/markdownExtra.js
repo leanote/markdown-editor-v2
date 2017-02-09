@@ -16,7 +16,22 @@ define([
             "def_list",
             "attr_list",
             "footnotes",
-            "smartypants",
+            // smartypants不要, 因为它把'和"转成了中文引号, --转成了一个–
+            // "smartypants", // https://daringfireball.net/projects/smartypants/
+            /*s
+            SmartyPants is a free web publishing plug-in for Movable Type, Blosxom, and BBEdit that easily translates plain ASCII punctuation characters into “smart” typographic punctuation HTML entities.
+SmartyPants can perform the following transformations:
+
+Straight quotes ( " and ' ) into “curly” quote HTML entities
+Backticks-style quotes (``like this'') into “curly” quote HTML entities
+Dashes (“--” and “---”) into en- and em-dash entities
+Three consecutive dots (“...”) into an ellipsis entity
+This means you can write, edit, and save your posts using plain old ASCII straight quotes, plain dashes, and plain dots, but your published posts (and final HTML output) will appear with smart quotes, em-dashes, and proper ellipses.
+
+SmartyPants is a combination plug-in — a single plug-in file that works with Movable Type, Blosxom, and BBEdit. It can also be used from a Unix-style command-line.
+
+SmartyPants does not modify characters within <pre>, <code>, <kbd>, or <script> tag blocks. Typically, these tags are used to display text where smart quotes and other “smart punctuation” would not be appropriate, such as source code or example markup.
+             */
             "strikethrough",
             "newlines",
         ],

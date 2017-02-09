@@ -36,7 +36,7 @@ function log(o) {
                 <div class="layout-wrapper-l2">
                     <div class="navbar navbar-default">
                         <div class="navbar-inner" id="wmd-button-bar">
-                            <div class="wmd-button-bar-inner">
+                            <div class="wmd-button-bar-inner clearfix">
                               <ul class="nav left-buttons">
                                   <li class="wmd-button-group1 btn-group"></li>
                               </ul>
@@ -61,8 +61,8 @@ function log(o) {
                     <div class="layout-wrapper-l3">
                       <div id="left-column">
                           <pre id="wmd-input" class="form-control"><div id="wmd-input-sub" class="editor-content mousetrap" contenteditable=true></div><div class="editor-margin"></div></pre>
+                          <!-- v2 markdown lightmode需要 -->
                           <div class="textarea-helper"></div>
-                          <!-- <textarea id="wmd-input"></textarea> -->
                         </div>
                         <div id="right-column">
                         <div class="preview-panel panel-open" id="preview-panel">
@@ -100,17 +100,9 @@ function log(o) {
 
 <textarea id="life">leanote Markdown 语法手册
 
+"life"
 
-```javascript
-function a() {
-}
-```
-    life
-    function a() {
-    }
-    
-    enter code here
-
+'life'
 
 ```sequence
 Alice->Bob: Hello Bob, how are you?
@@ -130,12 +122,30 @@ st->op->cond
 cond(yes)->e
 cond(no)->op
 ```
- 
 
+```
+function a() {
+}
+```
+    life
+    function a() {
+    }
+    
+    enter code here
+
+ 
+You can also render sequence diagrams like this:
+ 
+> **Note:** You can find more information:
+ 
+> - about **Sequence diagrams** syntax [here][7],
+> - about **Flow charts** syntax [here][8].
+ 
 ### Support Leanote
 
 大家可复制以下的文字, 粘贴到新建的Markdown笔记中看看效果.
 
+[toc]
 
 # leanote Markdown 语法手册
 
@@ -300,9 +310,9 @@ document.write(fib(10));
 
 | 项目     | 价格 | 数量  |
 | --------  | -----: | :----:  |
-| 计算机 | $1600 | 5    |
-| 手机    | $12     | 12   |
-| 管线    | $1       | 234 |
+| 计算机 | \$1600 | 5    |
+| 手机    | \$12     | 12   |
+| 管线    | \$1       | 234 |
 Welcome to Leanote!
 ===================
  
@@ -488,7 +498,7 @@ Alipay Donation:
  
 ![leantoe donation](http://leanote.org/images/leanote/leanote_alipay.jpg)
  
-
+ 
   [^Leanote]: [Leanote](https://stackedit.io/) is a full-featured, open-source Markdown editor based on PageDown, the Markdown library used by Stack Overflow and the other Stack Exchange sites.
  
  
@@ -522,7 +532,7 @@ Alipay Donation:
     };
 
     function setEditorContent(content) {
-      if(MD && MD.setContent) {
+      if(MD) {
         MD.setContent(content);
       } else {
         clearIntervalForSetContent = setTimeout(function() {
