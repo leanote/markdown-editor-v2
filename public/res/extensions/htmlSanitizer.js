@@ -122,7 +122,8 @@ define([
 		"samp,small,span,strike,strong,sub,sup,time,tt,u,var,input"));
 
 	// Special Elements (can contain anything)
-	var specialElements = makeMap("script,style");
+	// var specialElements = makeMap("script,style"); //  style为什么需要, 是因为表格style="align:left"
+	var specialElements = makeMap("script"); //  style为什么需要, 是因为表格style="align:left"
 
 	// benweet: Add iframe
 	// blockElements.iframe = true;
@@ -140,7 +141,7 @@ define([
 			'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
 			'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
 			'scope,scrolling,shape,size,span,start,summary,target,title,type,' +
-			'valign,value,vspace,width,checked'));
+			'valign,value,vspace,width,checked,style')); // style为什么需要, 是因为表格style="align:left"
 
 	// benweet: Add id and allowfullscreen (YouTube iframe)
 	validAttrs.id = true;
