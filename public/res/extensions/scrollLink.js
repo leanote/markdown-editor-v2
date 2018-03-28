@@ -346,7 +346,7 @@ define([
                 return;
             }
             evt.preventDefault();
-            var anchorElt = $('#preview-contents ' + id);
+            var anchorElt = $('#preview-contents ' + decodeURIComponent(id));
             if(!anchorElt.length) {
                 return;
             }
